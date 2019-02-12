@@ -16,7 +16,7 @@
         </div>
 
         <!-- 图片部分-->
-        <div class="xxbg">
+        <div class="xxbg" :style="'background-image:url(img/bjbg.png)'">
             <div class="container">
                 <div class="book">
                     <span>新书驾到</span>
@@ -59,22 +59,22 @@
                 <div class="contents">
                 <!-- 第一本书 -->
                 <div class="content">
-                    
-                    <div class="nbook">
-                        <ul v-for="item in list" :key="item.bid">
-                            <li>
-                               <div class="bookimg">
-                                    <img width="152px" height="184px" :src="item.pic" alt="" />
-                                </div> 
-                            </li>
-                            <li><a href="javascript:;">{{item.title}}</a></li>
-                            <li>{{item.author}}</li>
-                            <li>{{item.press}}</li>
-                            <li>{{item.searchid}}</li>
-                            <li>ISBN：{{item.ISBN}}</li>
-                            <li>浏览次数：76</li>
-                            <li><button>我要借阅</button></li>
-                        </ul>
+                    <div class="nbook" v-for="item in list" :key="item.id">
+                        <div class="bookImg">
+                            <img :src="'http://127.0.0.1:3000/'+item.pic" />
+                        </div>
+                        <div class="bookCont">
+                            <ul>
+                                <li><router-link to="#">{{item.title}}</router-link></li>
+                                <li>{{item.author}}</li>
+                                <li>{{item.press}}</li>
+                                <li>{{item.searchid}}</li>
+                                <li>ISBN：{{item.ISBN}}</li>
+                                <li>浏览次数：76</li>
+                                <li><button>我要借阅</button></li> 
+                            </ul>
+                        </div> 
+                        
                     </div>
                 </div>
                 
@@ -95,24 +95,23 @@
 </template>
 <script>
 export default {
-     data: function() {
+    data: function() {
         return {
           list: []
         }
     },
-        methods: {
-        handleNews(){
+    methods: {
+        newbooks(){
           // 1.发送ajax请求给服务器
           var url = "http://127.0.0.1:3000/newbook";
-          this.axios.get(url).then
-          (result=>{
+          this.axios.get(url).then(result=>{
             this.list = result.data.data;
             // console.log(result);
           })
         },
     },
   created() {
-    this.handleNews();
+    this.newbooks();
   },
 }
 </script>
@@ -193,8 +192,8 @@ div.input button{
     background: skyblue;
     font-size: 18px;
 }
-div.bookimg{
-    float: left;
+div.bookImg,div.bookCont{
+    margin-right: 20px;
 }
 
 div.title{
@@ -228,7 +227,8 @@ div.content{
     margin-left: 20px;
 }
 div.nbook{
-    float: left;
+    display: inline-flex;
+    width: 50%;
     padding-bottom: 30px;
     min-height: 235px;
     padding-right: 10px;

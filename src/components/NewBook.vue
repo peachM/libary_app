@@ -101,9 +101,9 @@ export default {
         }
     },
     methods: {
-        newbooks(){
+        hotbooks(){
           // 1.发送ajax请求给服务器
-          var url = "http://127.0.0.1:3000/newbook";
+          var url = "http://127.0.0.1:3000/Newbook";
           this.axios.get(url).then(result=>{
             this.list = result.data.data;
             // console.log(result);
@@ -111,7 +111,7 @@ export default {
         },
     },
   created() {
-    this.newbooks();
+    this.hotbooks();
   },
 }
 </script>

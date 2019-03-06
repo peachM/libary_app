@@ -619,7 +619,7 @@
                     <img src="http://127.0.0.1:3000/img/index/next.png" alt="">
                 </div>
             </div>
-            <div class="jumpmore">
+            <div class="jumpmore" @click="jumpNewbook">
                 <span>浏览更多新书</span>
                 <img src="http://127.0.0.1:3000/img/index/right1.png" width="20px">
             </div>
@@ -670,6 +670,10 @@ export default {
             // console.log(result);
           })
         },
+        /* 跳转到NewBook组件 */
+        jumpNewbook(){
+            this.$router.push("/Bulletin")
+        },
     },
   created() {
     this.newbooks();
@@ -678,7 +682,6 @@ export default {
 }
 </script>
 <style scoped>
-
 body {
     font-family: "PingFang SC", PingFangSC-Regular, "Microsoft YaHei", 微软雅黑, "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: rgba(0, 0, 0, 0.78);

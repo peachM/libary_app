@@ -2,46 +2,55 @@
         <!-- 首页头部 -->
 <div class="index">
     <header>
-        <div class="container">
-            <div class="top">
-                <h1>Libary</h1>
-                <div class="rnav">
-                    <ul>
-                        <li><a href="javascript:;"><img src="http://127.0.0.1:3000/img/index/pin.png" alt="">
-                                <p>one reject</p>
-                            </a></li>
-                        <li><a href="javascript:;"><img src="http://127.0.0.1:3000/img/index/email.png" alt="">
-                                <p>email</p>
-                            </a></li>
-                        <li><a href="javascript:;"><img src="http://127.0.0.1:3000/img/index/telephone.png" alt="">
-                                <p>+6666 88</p>
-                            </a></li>
-                    </ul>
+      <div class="container">
+         <div class="top">
+           <h1>Libary</h1>
+             <div class="rnav">
+               <ul>
+                  <li>
+                    <a href="javascript:;">
+                       <img src="http://127.0.0.1:3000/img/index/pin.png">
+                       <p>one reject</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="javascript:;">
+                        <img src="http://127.0.0.1:3000/img/index/email.png">
+                        <p>email</p>
+                    </a>
+                   </li>
+                    <li>
+                      <router-link to="/Login">
+                        <img width="20" height="20" src="http://127.0.0.1:3000/img/index/mine.png">
+                        <p class="login">{{msg}}</p>
+                      </router-link>
+                    </li>
+                </ul>
                 </div>
 
             </div>
             <div class="navbar navbar-expand-md navbg navbar-dark">
-                <!-- 小屏幕最右侧的小按钮-->
-                <button class="btn btn-warning border-0 navbar-toggler" data-toggle="collapse" data-target="#content">
-                    <span class="navbar-toggler-icon"></span></button>
-                <!-- 导航栏中的菜单，小屏幕隐藏（垂直显示），大屏幕横向现实-->
-                <div class="collapse navbar-collapse" id="content">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="#">首页</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">借阅</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">资源</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">新闻</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">新生须知</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">关于我们</a></li>
-                    </ul>
-                </div>
+              <!-- 小屏幕最右侧的小按钮-->
+              <button class="btn btn-warning border-0 navbar-toggler" data-toggle="collapse"  data-target="#content">
+                  <span class="navbar-toggler-icon"></span></button>
+              <!-- 导航栏中的菜单，小屏幕隐藏（垂直显示），大屏幕横向现实-->
+              <div class="collapse navbar-collapse" id="content">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">借阅</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">资源</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">新闻</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">新生须知</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">关于我们</a></li>
+                </ul>
+              </div>
             </div>
             <div class="ban_news">
-                <div class="bcont">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt nam repellendus adipisicing elit.
-                    Nesciunt nam repellendus adipisicing elit. Nesciunt nam repellendus .
-                </div>
-                <button>ReadMore</button>
+              <div class="bcont">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt nam repellendus  adipisicing elit.
+                  Nesciunt nam repellendus adipisicing elit. Nesciunt nam repellendus .
+              </div>
+              <button>ReadMore</button>
             </div>
         </div>
     </header>
@@ -658,6 +667,7 @@
 export default {
     data: function() {
         return {
+          msg: '',
           list: []   /* 新书数据 */
         }
     },
@@ -677,6 +687,11 @@ export default {
     },
   created() {
     this.newbooks();
+    if(sessionStorage.getItem('uid')){
+        this.msg = sessionStorage.getItem('uid')+"，欢迎你！"
+    }else{
+        this.msg = "请登录"
+    }
   },
     
 }
@@ -937,7 +952,7 @@ div.imgbox img:hover {
     display: inline-block;
     /* text-align: center; */
     width: 220px;
-    background: #efeff4;
+    background: #fff;
     color: black;
     font-size: 40px;
     left: 0;
@@ -1058,7 +1073,7 @@ div.imgbox img:hover {
     border: 1px solid #ccc;
     padding: 0px;
     margin: 0px;
-    margin: 30px;
+    margin: 20px 38px;
 }
 
 .stuone_top {

@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#fff">
+  <div>
     <!--导航栏部分-->
     <div class="nb_top">
       <div class="container">
@@ -8,9 +8,9 @@
           <span>· 新书上架</span>
         </div>
         <div class="right">
-          <a href="#">新手通报</a>
-          <a href="#">热门浏览</a>
-          <a href="#">图书馆首页</a>
+          <router-link to="/Bulletin">新手通报</router-link>
+          <router-link to="/HotBook">热门浏览</router-link>
+          <router-link to="/">图书馆首页</router-link>
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
               <div class="bookCont">
                 <ul>
                   <li>
-                    <router-link to="#">{{item.title}}</router-link>
+                    <router-link to="/BookDetail">{{item.title}}</router-link>
                   </li>
                   <li>{{item.author}}</li>
                   <li>{{item.press}}</li>

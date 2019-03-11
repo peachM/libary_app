@@ -8,12 +8,12 @@ Vue.config.productionTip = false
 import './lib/mui/css/mui.css'
 import './lib/mui/css/icons-extra.css'
 // 3.引入mint-ui组件 Header
-// import {Header,Swipe,SwipeItem} from "mint-ui"
+import {Header,Swipe,SwipeItem,Button} from "mint-ui"
 // 4.注册Header组件
-// Header.name mt-header
-// Vue.component(Header.name,Header);
-// Vue.component(Swipe.name,Swipe);
-// Vue.component(SwipeItem.name,SwipeItem);
+Vue.component(Header.name,Header);
+Vue.component(Swipe.name,Swipe);
+Vue.component(SwipeItem.name,SwipeItem);
+Vue.component(Button.name,Button);
 // 5.引入axios库
 import axios from "axios"
 // 6.配置跨域访问保存session

@@ -20,6 +20,26 @@ import axios from "axios"
 axios.defaults.withCredentials=true;
 // 7.将axios库配置vue实例对象中
 Vue.prototype.axios = axios;
+// 8.引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
+
+// 9.引入element-ul组件
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI)
+
+// 10. 创建日期过滤器
+Vue.filter("dateFilter",function(val){
+  //1:获取新日期对象
+  var date = new Date(val); 
+  //2:获取新日期对象 年 月+1 日 
+  var y = date.getFullYear();
+  var m = date.getMonth()+1;
+  var d = date.getDate();
+  //3:返回字符串
+  return `${y}-${m}-${d}`;
+})
 
 new Vue({
   router,

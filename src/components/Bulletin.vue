@@ -64,24 +64,15 @@
         <div class="browsing_label">
           <label>按月浏览</label>
           <select>
-            <option value>2019</option>
-            <option value>2018</option>
-            <option value>2017</option>
+            <option v-for="item of month" :key="item.id">{{item}}</option>
           </select>
-          <!--                 <select>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-          </select>-->
           <button>按月浏览</button>
         </div>
         <div class="browsing_label">
           <label>按馆藏址浏览</label>
           <select id="address">
-            <option value="china">中文</option>
-            <option value="computer">计算机</option>
-            <option value="english">英文</option>
-            <option value="education">教育</option>
+            <option value="one">一楼社科图书借阅室</option>
+            <option value="two">二楼新书阅览室</option>
           </select>
           <button>按馆藏址浏览</button>
         </div>
@@ -152,6 +143,7 @@
 export default {
   data() {
     return {
+      month:[1,2,3,4,5,6,7,8,9,10,11,12],
       pno: 0,
       pageSize: 6,
       list: [],
@@ -375,7 +367,7 @@ label {
   border: 1px solid #ccc !important;
 }
 #address {
-  width: 110px;
+  width: 130px;
 }
 .browsing_label button {
   height: 43px;

@@ -1,5 +1,29 @@
 <template>
-  <div>
+  <div class="hotbookbox">
+    <div class="borrow" v-if="isborrow==true">
+      <div class="inner">
+        <div class="block">
+          <div class="dete_top">
+            <h3>当前书籍：{{nowtitle}}</h3>
+            <span class="demonstration">请选择预计归还时间</span>
+          </div>
+          <el-date-picker
+            v-model="value7"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions2"
+          ></el-date-picker>
+        </div>
+        <div class="datebutton">
+          <el-button type="primary" @click="yes">确定</el-button>
+          <el-button type="primary" @click="no">取消</el-button>
+        </div>
+      </div>
+    </div>
     <!--导航栏部分-->
     <div class="nb_top">
       <div class="container">
@@ -24,22 +48,22 @@
         <div class="row">
           <div class="col col-lg-8 col-md-12 col-sm-12">
             <div class="input">
-              <input type="text" style="width:100%;height:55px">
+              <input type="text" name="search" v-model="search" style="width:100%;height:55px">
             </div>
           </div>
           <div class="col col-lg-2 col-md-none col-sm-none">
             <div class="input">
               <select>
-                <option value>书名</option>
-                <option value>著者</option>
-                <option value>ISBN</option>
-                <option value>出版社</option>
+                <option value="book">书名</option>
+                <option value="author">著者</option>
+                <option value="isbn">ISBN</option>
+                <option value="press">出版社</option>
               </select>
             </div>
           </div>
           <div class="col col-lg-2 col-md-12 col-sm-12">
             <div class="input">
-              <button>搜索</button>
+              <button @click="bookSearch">搜索</button>
             </div>
           </div>
         </div>
@@ -61,7 +85,7 @@
           <div class="content">
             <div class="nbook" v-for="item in list" :key="item.id">
               <div class="bookImg">
-                <img :src="'http://127.0.0.1:3000/'+item.pic">
+                <img style="width:152px" :src="'http://127.0.0.1:3000/'+item.pic">
               </div>
               <div class="bookCont">
                 <ul>
@@ -74,14 +98,13 @@
                   <li>ISBN：{{item.ISBN}}</li>
                   <li>浏览次数：76</li>
                   <li>
-                    <button>我要借阅</button>
+                    <button @click="borrow(item.title)">我要借阅</button>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-
         <div class="readMore" @click="getMore">加载更多...</div>
       </div>
     </div>
@@ -98,19 +121,106 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   data: function() {
     return {
       pno: 0,
       pageSize: 10,
-      list: []
+      list: [],
+      search: "",
+      isborrow: false,
+      pickerOptions2: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
+      value7: "",
+      start: "",
+      end: "",
+      nowtitle:""
     };
   },
   created() {
     this.getMore();
     this.hotbooks();
+    this.bookSearch();
   },
   methods: {
+    borrow(title){
+      this.isborrow = true;
+      this.nowtitle = title;
+    },
+    /* 中国标准时间转 年月日 */
+    parseTime(str) {
+      if ((str + "").indexOf("-") != -1) {
+        str = str.replace(new RegExp(/-/gm), "/");
+      }
+      let d = new Date(str);
+      let newDateYear = d.getFullYear();
+      let newDateMonth = d.getMonth() + 1 < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
+      let newDateDay = d.getDate() + "" < 10 ? "0" + d.getDate() + "" : d.getDate() + "";
+      return newDateYear + "-" + newDateMonth + "-" + newDateDay;
+    },
+    yes() {
+      this.start = this.parseTime(this.value7[0]);      
+      this.end = this.parseTime(this.value7[1]);
+      var uid = sessionStorage.getItem('uid');  
+      var postData = qs.stringify({
+        bookname: this.nowtitle,
+        borrowdate: this.start,
+        Ereturndate: this.end,
+      });
+      var url = "http://127.0.0.1:3000/Borrow?bookname="+this.nowtitle;
+      url+="&borrowdate="+this.start;
+      url+="&Ereturndate="+this.end;
+      url+="&uid="+uid;
+      this.axios.post(url,postData).then(result => {
+        console.log(result.data);
+        if(result.data.code == 1){
+            alert("添加成功！");
+          }else{
+            alert("请登录");
+          }
+      });
+      this.isborrow = false;
+    },
+    no() {
+      this.isborrow = false;
+    },
+    bookSearch() {
+      // console.log(this.search);
+      var url = "http://127.0.0.1:3000/Search?key=" + this.search;
+      this.axios.get(url).then(result => {
+        this.list = result.data.data;
+      });
+    },
     hotbooks() {
       // 1.发送ajax请求给服务器
       var url = "http://127.0.0.1:3000/Hotbook";
@@ -125,15 +235,48 @@ export default {
       url += "/Hotbook?pno=" + this.pno;
       url += "&pageSize=" + this.pageSize;
       this.axios.get(url).then(result => {
-          var rows = this.list.concat(result.data.data);
+        var rows = this.list.concat(result.data.data);
         this.list = rows;
       });
-
     }
   }
 };
 </script>
 <style scoped>
+.el-date-editor--daterange.el-input,
+.el-date-editor--daterange.el-input__inner,
+.el-date-editor--timerange.el-input,
+.el-date-editor--timerange.el-input__inner {
+  width: 420px;
+}
+.datebutton {
+  margin: 20px 30px;
+}
+.dete_top {
+  margin-bottom: 30px;
+}
+.dete_top h3{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.inner {
+  padding: 20px;
+  width: 50%;
+  margin: 20% 25%;
+  background: #ff7f38;
+  opacity: 1;
+  text-align: center;
+}
+.hotbookbox {
+  position: relative;
+}
+.borrow {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+}
 .readMore {
   text-align: center;
   font-size: 25px;
@@ -280,7 +423,7 @@ div.nbook ul > li {
 div.nbook ul > li > button {
   margin-top: 3px;
   background: #ff7f38;
-  height: 25px;
+  height: 32px;
   border: 0;
   color: white;
 }

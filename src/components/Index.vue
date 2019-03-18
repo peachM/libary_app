@@ -36,8 +36,9 @@
               <!-- 导航栏中的菜单，小屏幕隐藏（垂直显示），大屏幕横向现实-->
               <div class="collapse navbar-collapse" id="content">
                 <ul class="navbar-nav">
+                    <router-link class="nav-link" to="/"></router-link>
                     <li class="nav-item"><a class="nav-link" href="#">首页</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">借阅</a></li>
+                    <li class="nav-item"><a @click="jumpHot" class="nav-link" href="#">借阅</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">资源</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">新闻</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">新生须知</a></li>
@@ -672,6 +673,9 @@ export default {
         }
     },
     methods: {
+        jumpHot(){
+            this.$router.push('/Hotbook');
+        },
         newbooks(){
           // 1.发送ajax请求给服务器
           var url = "http://127.0.0.1:3000/Index";

@@ -38,18 +38,18 @@
 
         <div class="prev_next">
           <div class="prev">
-            <img src="http://127.0.0.1:3000/img/nbook/left.png" alt>
+            <img @click="prevbutton" src="http://127.0.0.1:3000/img/nbook/left.png" alt>
           </div>
           <!-- 轮播图 -->
           <div class="tempwrap">
             <!-- 轮播图 -->
-            <div class="wrap">
+            <div class="wrap" :style="styleObj2">
               <img v-for="item in list" :key="item.nid" :src="'http://127.0.0.1:3000/'+item.pic">
             </div>
             <!-- 左箭头 -->
             <!-- 右箭头 -->
             <div class="next">
-              <img src="http://127.0.0.1:3000/img/nbook/right.png" alt>
+              <img @click="nextbutton" src="http://127.0.0.1:3000/img/nbook/right.png" alt>
             </div>
           </div>
         </div>
@@ -143,14 +143,29 @@
 export default {
   data() {
     return {
-      month:[1,2,3,4,5,6,7,8,9,10,11,12],
+      month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       pno: 0,
       pageSize: 6,
       list: [],
-      row: []
+      row: [],
+      styleObj2: {},
+      count: 0
     };
   },
   methods: {
+    prevbutton() {
+      this.styleObj2 = { "margin-right": "215px" };
+      this.count = 0;
+    },
+    nextbutton() {
+      if (this.count <= 4) {
+        this.count++;
+        this.styleObj2 = { "margin-left": -215 * this.count + "px" };
+      }
+      if (this.count > 4) {
+        this.count = 0;
+      }
+    },
     jumpdetail(e) {
       var nid = e.target.dataset.nid;
       this.$router.push("/BookDetail?nid=" + nid);

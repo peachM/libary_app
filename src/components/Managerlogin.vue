@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="managerlogin">
        <div class="head">
         <div class="banner">
             <!-- 顶部-->
@@ -16,20 +16,19 @@
                 </div>
                 <div class="r_center">
                     <div class="login_top">
-                        <span>图书馆登录</span>
-                        <a  @click="jumppswd" href="#"><span>密码说明</span></a>
+                        <span>管理员登录</span>
+                        <a @click="jumppswd"><span>密码说明</span></a>
                     </div>
 
                     <hr />
-                    <form action="#">
-                    <input class="yym" type="text" name="uid" v-model="uid" placeholder="用户名" />
-                    <input class="mm" type="password" name="upwd" v-model="upwd" placeholder="密码" />
-                    <div class="ckbx">
-                        <p><a @click="jumpManagerlogin" href="#"> 管理登录页</a></p>
-                        <p><a href="#"> 修改密码</a></p>
-                    </div>
-                    <!-- <input type="button" value="登录"  @click="butLogin"> -->
-                    <button class="btn btn-primary w-100 border-0 pt-2 pb-2" @click="butLogin">登录</button>
+                    <form>
+                        <input class="yym" type="text" name="workid" v-model="workid" placeholder="用户名" />
+                        <input class="mm" type="password" name=" " v-model="pswd" placeholder="密码" />
+                        <div class="ckbx">
+                            <p> <a @click="jumpLogin" href="javascript:;"> 读者登录页</a></p>
+                            <p> <a href="javascript:;"> 修改密码 </a></p>
+                        </div>
+                        <button class="btn btn-primary w-100 border-0 pt-2 pb-2" @click="MangerButton">登录</button>
                     </form>
                 </div>
             </div>
@@ -39,51 +38,41 @@
                     武昌工学院图书馆. &copy; Copyright 2000 - 2018
                 </p>
             </div>
- 
-
         </div>
     </div>
     </div>
 </template>
 <script>
 export default {
-    data() {
+  data() {
         return {
-            uid:'',
-            upwd:''
+            workid:'',
+            pswd:''
         }
     },
     methods:{
-        jumpManagerlogin(){
-            this.$router.push('/Managerlogin');
+        jumpLogin(){
+            this.$router.push('/Login');
         },
         jumppswd(){
             this.$router.push('/pswdintro');
         },
-        butLogin(){
-            // 1.获取用户输入用户名和密码
-            console.log(this.uid+"-"+this.upwd);
-            // 2. 验证不能为空
-            var reg = /^\d{6}$/i;
-            if(!reg.test(this.uid)){
-                alert("用户名格式不正确，请检查！")
-                return;
-            }
-            var url = "http://127.0.0.1:3000/Login?uid="+this.uid+"&upwd="+this.upwd;
-            this.axios.get(url).then(result=>{
-                console.log(result.data.code);
+        MangerButton(){
+            console.log(this.workid+'-'+this.pswd)
+            var url = "http://127.0.0.1:3000/ManagerLogin?workid="+this.workid+"&pswd="+this.pswd;
+            this.axios.get(url).then(result=>{ 
                 if(result.data.code==1){
-                    sessionStorage.setItem("uid",this.uid);
-                    this.$router.push("/");
+                    this.$router.push("/Manager/");
+                    return
                 }else{
-                    alert("用户名或密码有误！");
-                    this.$router.push("/Login");
-                    this.upwd=""
-                }
+                    alert("用户名或者密码错误！")
+                    this.$router.push("/Managerlogin");
+                    this.pswd=''
+                }          
+                // console.log(result.data.code);
             })
-
         }
-    }
+    }  
 }
 </script>
 <style scoped>
@@ -96,7 +85,7 @@ export default {
 }
 .banner{
     position: relative;
-    background: url("http://127.0.0.1:3000/img/login/login.jpg") no-repeat top;
+    background: url("http://127.0.0.1:3000/img/manager/admin1.jpg") no-repeat top;
     background-size: cover;
     min-height:800px;
 }
@@ -111,10 +100,7 @@ input.mm{
     background-size: 24px;
     padding-left: 40px; 
 }
-/* a{
-    color: #ccc;
-    text-decoration: none !important;
-} */
+
 a:hover{
     color: skyblue;
     cursor: pointer;
@@ -193,6 +179,7 @@ input{
 .ckbx p{
     display: inline;
 }
+
 .r_center .ckbx>p a{
     color: skyblue;
     font-size: 16px;

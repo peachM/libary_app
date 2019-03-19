@@ -1,5 +1,5 @@
 <template>
-  <div class="borrowbox">
+  <div class="advisebox">
     <header>
       <div class="top">
         <div class="mycontainer">
@@ -25,10 +25,10 @@
                   <a @click="jumpBorrow" class="nav-link">我的借阅</a>
                 </li>
                 <li class="nav-item">
-                  <a @click="jumpAdvise" class="nav-link">提出意见</a>
+                  <a @click="jumpAdvise" class="nav-link" href="#">提出意见</a>
                 </li>
                 <li class="nav-item">
-                  <a @click="jumpnewStu" class="nav-link">新生须知</a>
+                  <a class="nav-link" href="#">新生须知</a>
                 </li>
                 <li class="nav-item">
                   <a @click="jumpIntro" class="nav-link">本馆简介</a>
@@ -40,57 +40,62 @@
       </div>
     </header>
     <div class="mycontainer">
-      <div class="borrow">
-        <h1>我的借阅记录</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>序号</th>
-              <th>图书名称</th>
-              <th>借阅时间</th>
-              <th>预计归还时间</th>
-              <th>归还时间</th>
-              <th>管理员消息</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item of list" :key="item.id">
-              <td>{{item.id}}</td>
-              <td>{{item.bookname}}</td>
-              <td>{{item.borrowdate}}</td>
-              <td>{{item.Ereturndate}}</td>
-              <td>{{item.returndate}}</td>
-              <td>{{item.Manmessage}}</td>
-              <td v-if="item">
-                <button>归还图书</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="title">
+        <h1>提出意见</h1>
+        <textarea name="advise" v-model="advise" cols="28" rows="10"></textarea>
+      </div>
+      <div class="musubmit">
+        <el-button type="warning" @click="submit">提交</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
-      list: []
+        data:new Date(),
+        advise:''
     };
   },
-  created() {
-    this.getdate();
-  },
   methods: {
-    jumpnewStu() {
-      this.$router.push("/newstudent");
+    /* 中国标准时间转 年月日 */
+    parseTime(str){
+      if ((str + "").indexOf("-") != -1) {
+        str = str.replace(new RegExp(/-/gm), "/");
+      }
+      let d = new Date(str);
+      let newDateYear = d.getFullYear();
+      let newDateMonth = d.getMonth() + 1 < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
+      let newDateDay = d.getDate() + "" < 10 ? "0" + d.getDate() + "" : d.getDate() + "";
+      return newDateYear + "-" + newDateMonth + "-" + newDateDay;
+    },
+    submit(){          
+        var content = this.advise;
+        var time = this.parseTime(this.data);
+        var uid = sessionStorage.getItem('uid');
+        // console.log(content,uid,time);
+        var postData = qs.stringify({
+            uid:uid,
+            content:content,
+            time:time
+        });
+        var url = "http://127.0.0.1:3000/Reader?uid="+uid;
+        url+="&content="+content;
+        url+="&time="+time;
+        this.axios.post(url,postData).then(result => {
+          console.log(result.data);
+          if(result.data.code==1){
+              alert("添加成功！");
+            }else{
+              alert("请登录");
+            }
+            this.advise='';
+        });
     },
     jumpAdvise() {
       this.$router.push("/advise");
-    },
-    jumpIndex() {
-      this.$router.push("/");
     },
     jumpIntro() {
       this.$router.push("/introduction");
@@ -101,62 +106,46 @@ export default {
     jumpBorrow() {
       this.$router.push("/Borrow");
     },
-    getdate() {
-      var uid = sessionStorage.getItem("uid");
-      console.log(uid);
-      var url = "http://127.0.0.1:3000/getBorrow?uid=" + uid;
-      this.axios.get(url).then(result => {
-        this.list = result.data.data;
-        // console.log(result);
-      });
+    jumpIndex(){
+        this.$router.push("/");
     }
   }
 };
 </script>
 <style scoped>
-.navbar-toggler {
+.musubmit {
+  text-align: right;
+  padding: 0 15px;
+  margin-bottom: 50px;
+}
+.el-button--warning {
+  font-size: 16px;
+}
+textarea {
+  border: 1px solid #c7551c;
+  margin: 20px 0;
+}
+.title {
+  margin: 85px 0 10px 30px;
+}
+.title h1 {
+  color: #c7551c;
+  font-size: 40px;
+  font-weight: normal !important;
+  font-family: "宋体";
+}
+.mycontainer {
+  width: 960px;
   margin: 0 auto;
 }
-.borrow {
-  text-align: center;
-  margin: 40px auto;
-}
-table tbody tr {
-  text-align: center;
-  line-height: 60px;
-  height: 60px;
-}
-table tbody > tr > td:last-child {
-  padding: 5px 0;
-  text-align: center;
-}
-.borrow h1 {
-  color: #c7551c;
-}
-.borrow table {
-  margin-top: 30px;
-  font-size: 20px;
-}
-.borrow table th {
-  width: 960px;
-  background: #ddd;
-  height: 60px;
-  line-height: 60px;
-  color: white;
-  font-weight: normal;
-}
-table tr:nth-child(even) {
-  background: #f4f4f4;
+.navbar-toggler {
+  margin: 0 auto;
 }
 header {
   background: url("http://127.0.0.1:3000/img/index/books.jpg") no-repeat top
     center;
   background-size: cover;
   min-height: 400px;
-}
-.mycontainer {
-  width: 960px;
-  margin: 0 auto;
 }
 /* 导航栏 */
 .navbg {

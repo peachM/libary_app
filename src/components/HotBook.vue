@@ -203,7 +203,7 @@ export default {
       url+="&uid="+uid;
       this.axios.post(url,postData).then(result => {
         console.log(result.data);
-        if(result.data.code == 1){
+        if(uid){
             alert("添加成功！");
           }else{
             alert("请登录");

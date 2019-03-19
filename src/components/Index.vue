@@ -36,13 +36,12 @@
               <!-- 导航栏中的菜单，小屏幕隐藏（垂直显示），大屏幕横向现实-->
               <div class="collapse navbar-collapse" id="content">
                 <ul class="navbar-nav">
-                    <router-link class="nav-link" to="/"></router-link>
                     <li class="nav-item"><a class="nav-link" href="#">首页</a></li>
-                    <li class="nav-item"><a @click="jumpHot" class="nav-link" href="#">借阅</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">资源</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">新闻</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">新生须知</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">关于我们</a></li>
+                    <li class="nav-item"><a @click="jumpHot" class="nav-link" href="#">图书列表</a></li>
+                    <li class="nav-item"><a @click="jumpBorrow" class="nav-link" href="#">我的借阅</a></li>
+                    <li class="nav-item"><a @click="jumpAdvise" class="nav-link" href="#">提出意见</a></li>
+                    <li class="nav-item"><a @click="jumpnewStu" class="nav-link" href="#">新生须知</a></li>
+                    <li class="nav-item"><a @click="jumpIntro" class="nav-link" href="#">本馆简介</a></li>
                 </ul>
               </div>
             </div>
@@ -605,7 +604,7 @@
         </ul>
 
         <div class="new_info">
-            <div class="bigreadybox">
+            <div class="bigreadybox" :style="styleObj">
                 <div class="readybox" v-for="item in list" :key="item.id">
                     <img :src="'http://127.0.0.1:3000/'+item.pic" />
                     <div class="title">{{item.title}}</div>
@@ -623,10 +622,10 @@
         <div class="container btnmore">
             <div class="prev_next">
                 <div class="pre">
-                    <img src="http://127.0.0.1:3000/img/index/prev.png" alt="">
+                    <img v-if="isprev==true" @click="prevbutton" src="http://127.0.0.1:3000/img/index/prev.png" />
                 </div>
                 <div class="next">
-                    <img src="http://127.0.0.1:3000/img/index/next.png" alt="">
+                    <img v-if="isnext==true" @click="nextbutton" src="http://127.0.0.1:3000/img/index/next.png" />
                 </div>
             </div>
             <div class="jumpmore" @click="jumpNewbook">
@@ -669,12 +668,48 @@ export default {
     data: function() {
         return {
           msg: '',
-          list: []   /* 新书数据 */
+          list: [],   /* 新书数据 */
+          styleObj:{},
+          count:0,
+          isprev:false,
+          isnext:true
         }
     },
     methods: {
+        prevbutton(){      
+            this.styleObj = {'margin-right':'182px'};
+            this.isnext = true;
+            this.count = 0;
+        },
+        nextbutton(){
+            this.isprev = true;            
+            if(this.count<=4){
+                this.count++;
+                this.styleObj = {'margin-left':-182*this.count+'px'};
+            }
+            if(this.count>4){ 
+                this.count = 0;
+                this.isnext = false;                
+            }
+        },
+        jumpnewStu(){
+            this.$router.push('/newstudent')
+        },
+        jumpAdvise(){
+            this.$router.push('/advise')
+        },
+        jumpIntro(){
+            this.$router.push('/introduction')
+        },
         jumpHot(){
             this.$router.push('/Hotbook');
+        },
+        jumpBorrow(){
+            this.$router.push('/Borrow')
+        },
+        /* 跳转到NewBook组件 */
+        jumpNewbook(){
+            this.$router.push("/Bulletin")
         },
         newbooks(){
           // 1.发送ajax请求给服务器
@@ -683,10 +718,6 @@ export default {
             this.list = result.data.data;
             // console.log(result);
           })
-        },
-        /* 跳转到NewBook组件 */
-        jumpNewbook(){
-            this.$router.push("/Bulletin")
         },
     },
   created() {
@@ -699,8 +730,13 @@ export default {
   },
     
 }
+
 </script>
 <style scoped>
+.navbar-expand-md .navbar-nav .nav-link {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
 body {
     font-family: "PingFang SC", PingFangSC-Regular, "Microsoft YaHei", 微软雅黑, "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: rgba(0, 0, 0, 0.78);
@@ -845,7 +881,7 @@ div.two {
 }
 
 .left_cont{
-    margin-top:15px;
+    margin-top:25px;
 }
 
 div.left_news,
@@ -962,6 +998,10 @@ div.imgbox img:hover {
     left: 0;
     top: 45px;
     z-index: 10;
+}
+.student ul,.teacher ul{
+    padding-top: 8px;
+    padding-left: 5px;
 }
 
 .student ul>li,
@@ -1212,14 +1252,13 @@ div.imgbox img:hover {
     width: 3000px;
     position: relative;
     margin-left: 0;
-    /* -180px */
+    /* -185px */
 }
 
 .readybox {
     margin: 0 25px;
     float: left;
     width: 150px;
-
 }
 
 

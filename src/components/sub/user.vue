@@ -118,7 +118,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="readMore" @click="getMore">加载更多...</div>
+      <div v-if="isgetMore==true" class="readMore" @click="getMore">加载更多...</div>
     </div>
   </div>
 </template>
@@ -143,7 +143,8 @@ export default {
       pageSize: 10,
       list: [],
       isadd: true,
-      isedit: false
+      isedit: false,
+      isgetMore: true
     };
   },
   created() {
@@ -160,7 +161,8 @@ export default {
                   alert('没有人！')
               }else{
                   this.list = result.data.data;
-              }          
+              }     
+              this.isgetMore = false;     
         //   console.log();  
       })
     },

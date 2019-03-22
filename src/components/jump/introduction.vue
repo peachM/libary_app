@@ -3,7 +3,7 @@
     <div class="top">
       <img src="img/logo.png" alt>
       <span>· 本馆简介</span>
-      <span @click="jumpIndex">· 首页</span>
+      <span class="index" @click="jumpIndex">· 首页</span>
     </div>
     <div class="mycontainer">
       <p>发布时间：{{date | dateFilter}}</p>
@@ -38,6 +38,9 @@ export default {
 };
 </script>
 <style scoped>
+.index{
+  cursor:pointer;
+}
 .content {
   text-indent: 2em;
   padding: 20px;

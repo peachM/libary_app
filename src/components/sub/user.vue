@@ -137,7 +137,7 @@ export default {
       tel: "",
       dept: "",
       uclass: "",
-      pno: 0,
+      pno: 1,
       upno:0,
       upageSize:50,
       pageSize: 10,
@@ -148,7 +148,7 @@ export default {
     };
   },
   created() {
-    this.getMore();
+    // this.getMore();
     this.userList();
     this.cansel();
   },
@@ -182,9 +182,9 @@ export default {
     },
     /* 确定按钮按钮 */
     editsure() {
-        var uid = this.$route.query.uid;
+      var uid = this.$route.query.uid;
       var postData = qs.stringify({
-          uid: this.uid,
+        uid: this.uid,
         upwd: this.upwd,
         name: this.name,
         tel: this.tel,
@@ -239,7 +239,7 @@ export default {
         // alert(result.data.msg);
       });
       this.isadd = false;
-      this.getMore();
+      // this.getMore();
       this.userList();
     },
     /* 取消添加按钮 */

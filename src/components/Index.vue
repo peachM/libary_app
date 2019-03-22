@@ -8,22 +8,22 @@
              <div class="rnav">
                <ul>
                   <li>
-                    <a href="javascript:;">
+                    <router-link to="/map">
                        <img src="http://127.0.0.1:3000/img/index/pin.png">
-                       <p>one reject</p>
-                    </a>
+                       <p>address</p>
+                    </router-link>
                   </li>
                   <li>
                     <a href="javascript:;">
-                        <img src="http://127.0.0.1:3000/img/index/email.png">
-                        <p>email</p>
+                        <img src="http://127.0.0.1:3000/img/index/telephone.png">
+                        <p>contact</p>
                     </a>
                    </li>
                     <li>
-                      <router-link to="/Login">
+                      <a @click="jump" href="javascript:;">
                         <img width="20" height="20" src="http://127.0.0.1:3000/img/index/mine.png">
                         <p class="login">{{msg}}</p>
-                      </router-link>
+                      </a>
                     </li>
                 </ul>
                 </div>
@@ -606,7 +606,7 @@
         <div class="new_info">
             <div class="bigreadybox" :style="styleObj">
                 <div class="readybox" v-for="item in list" :key="item.id">
-                    <img :src="'http://127.0.0.1:3000/'+item.pic" />
+                    <img :src="'http://127.0.0.1:3000/'+item.pic" @click="jumpdetail" :data-nid="item.nid" />
                     <div class="title">{{item.title}}</div>
                     <div class="rearch">
                         索书号：{{item.searchid}}
@@ -676,6 +676,13 @@ export default {
         }
     },
     methods: {
+        jump(){
+            if(this.msg!='请登录'){
+                this.$router.push('/myinfo');
+            }else{
+                this.$router.push('/Login');
+            }
+        },
         prevbutton(){      
             this.styleObj = {'margin-right':'182px'};
             this.isnext = true;
@@ -683,11 +690,11 @@ export default {
         },
         nextbutton(){
             this.isprev = true;            
-            if(this.count<=4){
+            if(this.count<=3){
                 this.count++;
-                this.styleObj = {'margin-left':-182*this.count+'px'};
+                this.styleObj = {'margin-left':-190*this.count+'px'};
             }
-            if(this.count>4){ 
+            if(this.count>3){ 
                 this.count = 0;
                 this.isnext = false;                
             }
@@ -719,6 +726,10 @@ export default {
             // console.log(result);
           })
         },
+        jumpdetail(e) {
+        var nid = e.target.dataset.nid;
+        this.$router.push("/BookDetail?nid=" + nid);
+    },
     },
   created() {
     this.newbooks();
@@ -1189,7 +1200,7 @@ div.imgbox img:hover {
 
 .stuone_btm {
     font-size: 14px;
-    line-height: 26px;
+    line-height: 20px;
     padding: 12px 35px;
 }
 
@@ -1249,7 +1260,7 @@ div.imgbox img:hover {
 }
 
 .bigreadybox {
-    width: 3000px;
+    width: 6000px;
     position: relative;
     margin-left: 0;
     /* -185px */

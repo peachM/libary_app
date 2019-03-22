@@ -72,7 +72,7 @@
 
     <!--内容部分-->
     <div class="mian">
-      <div class="container mt-5">
+      <div class="mycontainer mt-5">
         <div class="title">热门浏览排行榜</div>
         <div class="searchnav">
           <a href="#">热门浏览前100</a>
@@ -206,7 +206,7 @@ export default {
         if(uid){
             alert("添加成功！");
           }else{
-            alert("请登录");
+            alert("登录后才能借阅哦！");
           }
       });
       this.isborrow = false;
@@ -243,6 +243,10 @@ export default {
 };
 </script>
 <style scoped>
+.mycontainer{
+  width: 1000px;
+  margin: 0 auto; 
+}
 .el-date-editor--daterange.el-input,
 .el-date-editor--daterange.el-input__inner,
 .el-date-editor--timerange.el-input,
@@ -364,8 +368,9 @@ div.input button {
   background: skyblue;
   font-size: 18px;
 }
+
 div.bookImg,
-div.bookCont {
+div.bookCont { 
   margin-right: 20px;
 }
 

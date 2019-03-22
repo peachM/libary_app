@@ -62,7 +62,7 @@ export default {
             var url = "http://127.0.0.1:3000/ManagerLogin?workid="+this.workid+"&pswd="+this.pswd;
             this.axios.get(url).then(result=>{ 
                 if(result.data.code==1){
-                    this.$router.push("/Manager/");
+                    this.$router.push("/Manager");
                     return
                 }else{
                     alert("用户名或者密码错误！")

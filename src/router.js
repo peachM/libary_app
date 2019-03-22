@@ -18,6 +18,8 @@ import introduction from './components/jump/introduction.vue'
 import advise from './components/jump/advise.vue'
 import pswdintro from './components/jump/pswdintro.vue'
 import newstudent from './components/jump/newstudent.vue'
+import map from './components/jump/map.vue'
+import myinfo from './components/jump/myinfo.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -42,6 +44,8 @@ export default new Router({
     {path:'/advise',component:advise},
     {path:'/pswdintro',component:pswdintro},
     {path:'/newstudent',component:newstudent},
+    {path:'/map',component:map},
+    {path:'/myinfo',component:myinfo},
 
   ]
 })

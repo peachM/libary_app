@@ -18,10 +18,11 @@
     <!-- 图片部分-->
     <div class="xxbg">
       <div class="mycontainer">
+        <!--           
         <div class="book">
           <span>新书驾到</span>
         </div>
-        <div class="input-flex">
+      <div class="input-flex">
           <input class="input" type="text" style="width:750px;height:55px">
           <div class="input">
             <select>
@@ -34,8 +35,7 @@
           <div class="input">
             <button>搜索</button>
           </div>
-        </div>
-
+        </div>-->
         <div class="prev_next">
           <div class="prev">
             <img @click="prevbutton" src="http://127.0.0.1:3000/img/nbook/left.png" alt>
@@ -44,7 +44,13 @@
           <div class="tempwrap">
             <!-- 轮播图 -->
             <div class="wrap" :style="styleObj2">
-              <img v-for="item in list" :key="item.nid" :src="'http://127.0.0.1:3000/'+item.pic">
+              <img
+                v-for="item in mylist"
+                :key="item.nid"
+                :src="'http://127.0.0.1:3000/'+item.pic"
+                @click="jumpdetail"
+                :data-nid="item.nid"
+              >
             </div>
             <!-- 左箭头 -->
             <!-- 右箭头 -->
@@ -63,20 +69,29 @@
         <div class="browsing_title">分类浏览</div>
         <div class="browsing_label">
           <label>按月浏览</label>
-          <select>
-            <option v-for="item of month" :key="item.id">{{item}}</option>
+          <select v-model="month">
+            <option>all</option>
+            <option>5</option>
+            <option>4</option>
+            <option>3</option>
+            <option>2</option>
           </select>
-          <button>按月浏览</button>
+          <button @click="monthbutton">按月浏览</button>
         </div>
         <div class="browsing_label">
-          <label>按馆藏址浏览</label>
-          <select id="address">
-            <option value="one">一楼社科图书借阅室</option>
-            <option value="two">二楼新书阅览室</option>
+          <label>按图书分类浏览</label>
+          <select id="address" v-model="classify">
+            <option disabled>请选择</option>
+            <option>中文</option>
+            <option>教育学</option>
+            <option>经济科学</option>
+            <option>英文</option>
+            <option>计算机</option>
+            <option>小说</option>
           </select>
-          <button>按馆藏址浏览</button>
+          <button @click="classifybutton">按图书分类浏览</button>
         </div>
-        <div class="browsing_detail">当前显示：馆址(中文);</div>
+        <div class="browsing_detail">当前显示：馆址(二楼新书阅览室);</div>
         <div class="browing_order">
           排序方式：
           <span>上架时间</span>|
@@ -140,29 +155,51 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
-      month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       pno: 0,
       pageSize: 6,
       list: [],
+      mylist:[],
       row: [],
       styleObj2: {},
-      count: 0
+      count: 0,
+      month: "all",
+      classify:'请选择'
     };
   },
   methods: {
+    classifybutton(){
+      console.log(this.classify)
+      var data = qs.stringify({
+        key: this.classify
+      })
+      var url = "http://127.0.0.1:3000/classifykey";
+      this.axios.post(url, data).then(result=>{
+        this.list = result.data.data;
+      })
+    },
+    monthbutton() {
+      if(this.month=='all'){
+        this.month='';
+      }
+      var url = "http://127.0.0.1:3000/month?key="+this.month
+      this.axios.get(url).then(result=>{
+        this.list = result.data.data;
+      })
+    },
     prevbutton() {
-      this.styleObj2 = { "margin-right": "215px" };
+      this.styleObj2 = { "margin-left": "0px" };
       this.count = 0;
     },
     nextbutton() {
-      if (this.count <= 4) {
+      if (this.count <= 12) {
         this.count++;
         this.styleObj2 = { "margin-left": -215 * this.count + "px" };
       }
-      if (this.count > 4) {
+      if (this.count > 12) {
         this.count = 0;
       }
     },
@@ -175,6 +212,14 @@ export default {
       var url = "http://127.0.0.1:3000/Newbook";
       this.axios.get(url).then(result => {
         this.list = result.data.data;
+        // console.log(result);
+      });
+    },
+    lunboList() {
+      // 1.发送ajax请求给服务器
+      var url = "http://127.0.0.1:3000/Newbook";
+      this.axios.get(url).then(result => {
+        this.mylist = result.data.data;
         // console.log(result);
       });
     },
@@ -191,6 +236,7 @@ export default {
   created() {
     this.newbooks();
     this.hotbook();
+    this.lunboList();
   }
 };
 </script>
@@ -253,20 +299,20 @@ div > ul > li > a:visited {
   color: #ff7f38;
 }
 div.xxbg {
-  height: 620px;
+  height: 450px;
   background: url("http://127.0.0.1:3000/img/bjbg.png") no-repeat scroll 0 0
     #ff7f38;
 }
 
-div.book > span {
+/* div.book > span {
   display: inline-block;
   color: white;
   font-size: 28px;
   font-family: "楷体";
   margin-top: 80px;
-}
+} */
 
-.input-flex {
+/* .input-flex {
   display: flex;
 }
 .input {
@@ -287,7 +333,7 @@ div.book > span {
   color: white;
   background: skyblue;
   font-size: 18px;
-}
+} */
 div.bookimg {
   float: left;
 }
@@ -311,15 +357,16 @@ div.searchnav > a {
 }
 .prev_next {
   position: relative;
+  top: 80px;
 }
 
 .tempwrap {
   width: 855px;
-  margin: 80px auto;
+  margin: 0 auto;
   overflow: hidden;
 }
 .wrap {
-  width: 3000px;
+  width: 6000px;
   margin-left: -440px;
 }
 .wrap img {
@@ -424,7 +471,7 @@ label {
   float: left;
 }
 .book_img img {
-  width: 140px;
+  width: 125px;
   height: 160px;
 }
 .book_intr {

@@ -17,7 +17,7 @@
         <div class="mycontainer">
             <!-- 左边 新书 -->
             <div class="left_detail">
-            <h1>{{detail.title}}}</h1>
+            <h1>{{detail.title}}</h1>
             <div class="detail_book">
                 <img :src="'http://127.0.0.1:3000/'+detail.pic" />
                 <ul>
@@ -245,7 +245,7 @@ export default {
     }
     .bookimg img {
         float: left;
-        width: 130px;
+        width: 125px;
         height: 160px;
     }
 </style>

@@ -5,7 +5,8 @@
         <div class="top">
           <img src="img/logo.png" alt>
           <img src="http://127.0.0.1:3000/img/newStu/xszl.png" alt="">
-          <img style="width:93px;height:21px;margin-left:100px;" src="http://127.0.0.1:3000/img/newStu/gzjy.png" alt="">
+          <span class="youyuan"> <a href="#">馆长寄语</a> </span>
+          <span class="youyuan"> <router-link to="/"> 首页</router-link></span>
         </div>
         <div class="nav">
           <img src="http://127.0.0.1:3000/img/newStu/welcome.png" alt>
@@ -44,14 +45,25 @@ export default {
 };
 </script>
 <style scoped>
+.youyuan{
+  display: inline-block;
+  margin-left: 30px;
+  font-size: 26px;
+  font-family: '幼圆'
+}
+a{
+  color: #335884;
+  text-decoration: none;
+}
 .top img:nth-child(2){
-    width: 142px;
-    height: 33px;
+    width: 150px;
+    height: 35px;
     margin-left: 50px;
+    margin-right: 25px;
 }
 ul{
-    margin-left: 20px;
-    margin-top: -230px;
+    margin-left: 30px;
+    margin-top: -185px;
 }
 ul,
 li {
@@ -77,6 +89,6 @@ ul li {
   height: 130px;
 }
 .nav img {
-  margin: 80px 0 80px 750px;
+  margin: 88px 0 80px 720px;
 }
 </style>

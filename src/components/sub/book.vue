@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item of list" :key="item.bid">
+          <tr v-for="item of list" :key="item.id">
             <td width="80px">{{item.bid}}</td>
             <td width="100px">{{item.title}}</td>
             <td width="80px">{{item.classify}}</td>

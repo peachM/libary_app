@@ -4,6 +4,7 @@ import HotBook from "./components/HotBook.vue"
 import Index from "./components/Index.vue"
 import Bulletin from "./components/Bulletin.vue"
 import BookDetail from './components/BookDetail'
+import AllDetail from './components/AllDetail'
 import Login from './components/Login.vue'
 import Managerlogin from './components/Managerlogin'
 import Borrow from './components/Borrow.vue'
@@ -39,6 +40,7 @@ export default new Router({
     {path:'/Bulletin',component:Bulletin},
     {path:'/HotBook',component:HotBook},
     {path:'/BookDetail',component:BookDetail},
+    {path:'/AllDetail',component:AllDetail},
     {path:'/Borrow',component:Borrow},
     {path:'/introduction',component:introduction},
     {path:'/advise',component:advise},

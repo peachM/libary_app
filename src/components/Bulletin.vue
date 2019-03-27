@@ -8,8 +8,8 @@
           <span>· 新书通报</span>
         </div>
         <div class="right">
-          <router-link to="/Bulletin">新手通报</router-link>
-          <router-link to="/HotBook">热门浏览</router-link>
+          <router-link to="/Bulletin">新书通报</router-link>
+          <router-link to="/HotBook">馆藏浏览</router-link>
           <router-link to="/">图书馆首页</router-link>
         </div>
       </div>

@@ -29,11 +29,11 @@
       <div class="container">
         <div class="left">
           <img class="nbmylogo" src="img/logo.png" alt>
-          <span>· 新书上架</span>
+          <span>· 馆藏浏览</span>
         </div>
         <div class="right">
-          <router-link to="/Bulletin">新手通报</router-link>
-          <router-link to="/HotBook">热门浏览</router-link>
+          <router-link to="/Bulletin">新书通报</router-link>
+          <router-link to="/HotBook">馆藏浏览</router-link>
           <router-link to="/">图书馆首页</router-link>
         </div>
       </div>
@@ -83,15 +83,14 @@
         <div class="contents">
           <!-- 第一本书 -->
           <div class="content">
-            <div class="nbook" v-for="item in list" :key="item.id">
+            <div class="nbook" v-for="item in list" :key="item.bid">
               <div class="bookImg">
-                <img style="width:152px" :src="'http://127.0.0.1:3000/'+item.pic">
+                <img style="width:152px" :src="'http://127.0.0.1:3000/'+item.pic" @click="jumpdetail"
+                  :data-bid="item.bid">
               </div>
               <div class="bookCont">
                 <ul>
-                  <li>
-                    <router-link to="/BookDetail">{{item.title}}</router-link>
-                  </li>
+                  <li>{{item.title}}</li>
                   <li>{{item.author}}</li>
                   <li>{{item.press}}</li>
                   <li>{{item.searchid}}</li>
@@ -164,15 +163,19 @@ export default {
       value7: "",
       start: "",
       end: "",
-      nowtitle:""
+      nowtitle:"",
+      state:1
     };
   },
   created() {
     this.getMore();
-    this.hotbooks();
     this.bookSearch();
   },
   methods: {
+    jumpdetail(e) {
+      var bid = e.target.dataset.bid;
+      this.$router.push("/AllDetail?bid=" + bid);
+    },
     borrow(title){
       this.isborrow = true;
       this.nowtitle = title;
@@ -215,28 +218,26 @@ export default {
       this.isborrow = false;
     },
     bookSearch() {
-      // console.log(this.search);
       var url = "http://127.0.0.1:3000/Search?key=" + this.search;
       this.axios.get(url).then(result => {
         this.list = result.data.data;
       });
     },
-    hotbooks() {
-      // 1.发送ajax请求给服务器
+/*     getHotbook(){
       var url = "http://127.0.0.1:3000/Hotbook";
-      this.axios.get(url).then(result => {
+      this.axios.get(url).then(result=>{
         this.list = result.data.data;
-        // console.log(result);
-      });
-    },
+      })
+    }, */
     getMore() {
       this.pno++;
-      var url = "http://127.0.0.1:3000";
-      url += "/Hotbook?pno=" + this.pno;
+      var url = "http://127.0.0.1:3000/Hotbook";
+      url += "?pno=" + this.pno;
       url += "&pageSize=" + this.pageSize;
       this.axios.get(url).then(result => {
         var rows = this.list.concat(result.data.data);
         this.list = rows;
+        console.log(this.list)
       });
     }
   }
@@ -374,6 +375,9 @@ div.bookCont {
   margin-right: 20px;
 }
 
+div ul li:first-child{
+
+}
 div.title {
   margin-top: 40px;
   margin-bottom: 32px;

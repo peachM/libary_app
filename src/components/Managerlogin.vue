@@ -23,12 +23,12 @@
                     <hr />
                     <form>
                         <input class="yym" type="text" name="workid" v-model="workid" placeholder="用户名" />
-                        <input class="mm" type="password" name=" " v-model="pswd" placeholder="密码" />
+                        <input class="mm" type="password" name="pswd" v-model="pswd" placeholder="密码" />
                         <div class="ckbx">
                             <p> <a @click="jumpLogin" href="javascript:;"> 读者登录页</a></p>
                             <p> <a href="javascript:;"> 修改密码 </a></p>
                         </div>
-                        <button class="btn btn-primary w-100 border-0 pt-2 pb-2" @click="MangerButton">登录</button>
+                        <el-button type="primary" @click="MangerButton">登录</el-button>
                     </form>
                 </div>
             </div>
@@ -57,25 +57,36 @@ export default {
         jumppswd(){
             this.$router.push('/pswdintro');
         },
+        MangerButton2(){
+            var url = "http://127.0.0.1:3000/ManagerLogin?workid="+this.workid+"&pswd="+this.pswd;
+            this.axios.get(url).then(result=>{
+                console.log(result.data); 
+            })
+            console.log(11312312);
+        },
         MangerButton(){
             console.log(this.workid+'-'+this.pswd)
+            //http://127.0.0.1:3000/ManagerLogin?workid="admin"&pswd="123456"
             var url = "http://127.0.0.1:3000/ManagerLogin?workid="+this.workid+"&pswd="+this.pswd;
-            this.axios.get(url).then(result=>{ 
+            this.axios.get(url).then(result=>{
+                console.log(result.data.data); 
                 if(result.data.code==1){
                     this.$router.push("/Manager");
-                    return
                 }else{
                     alert("用户名或者密码错误！")
                     this.$router.push("/Managerlogin");
                     this.pswd=''
                 }          
-                // console.log(result.data.code);
+                
             })
         }
     }  
 }
 </script>
 <style scoped>
+.el-button{
+    width: 100%;
+}
 .login_top{
     margin-bottom: 15px;
 }

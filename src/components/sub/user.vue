@@ -193,8 +193,11 @@ export default {
       });
       var url = "http://127.0.0.1:3000/Edit";
       this.axios.post(url, postData).then(result => {
-          console.log(result.data);
-        // alert(result.data.msg);
+          if(result.data.code==1){
+            alert("修改成功！")
+          }else{
+            alert("修改失败！") 
+          }
       });
       this.isedit = false;
     },

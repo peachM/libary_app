@@ -63,7 +63,7 @@
               <td>{{item.returndate}}</td>
               <td>{{item.Manmessage}}</td>
               <td v-if="item">
-                <button>归还图书</button>
+                <myreturn-box :id="item.id" :Ereturndate="item.Ereturndate" :returndate="item.returndate"></myreturn-box>
               </td>
             </tr>
           </tbody>
@@ -73,10 +73,15 @@
   </div>
 </template>
 <script>
+import qs from 'qs'
+import myreturn from './template/myreturn'
 export default {
+  components:{
+    "myreturn-box":myreturn
+  },
   data() {
     return {
-      list: []
+      list: [],
     };
   },
   created() {

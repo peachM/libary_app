@@ -36,9 +36,7 @@
             <td width="100px">{{item.press}}</td>
             <td width="80px">{{item.state}}</td>
             <td>
-              <button>下架</button>
-              <button>编辑</button>
-              <button>删除</button>
+              <component-box :bid="item.bid" :state="item.state"></component-box>
             </td>
           </tr>
         </tbody>
@@ -48,12 +46,17 @@
   </div>
 </template>
 <script>
+import qs from "qs";
+import component from "../template/component.vue"
 export default {
+  components:{
+    "component-box":component
+  },
   data() {
     return {
       list: [],
       pno:0,
-      pageSize:10
+      pageSize:10,
     };
   },
   created() {
@@ -64,7 +67,7 @@ export default {
     getMore(){
       this.pno++;
       var url = "http://127.0.0.1:3000";
-      url += "/Hotbook?pno=" + this.pno;
+      url += "/Allbookinfo?pno=" + this.pno;
       url += "&pageSize=" + this.pageSize;
       this.axios.get(url).then(result => {
         var rows = this.list.concat(result.data.data);
@@ -73,12 +76,12 @@ export default {
     },
     getbooks() {
       // 1.发送ajax请求给服务器
-      var url = "http://127.0.0.1:3000/Hotbook";
+      var url = "http://127.0.0.1:3000/Allbookinfo";
       this.axios.get(url).then(result => {
         this.list = result.data.data;
         // console.log(result);
       });
-    }
+    },
   }
 };
 </script>

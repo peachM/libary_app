@@ -22,7 +22,9 @@
                     <li>
                       <a @click="jump" href="javascript:;">
                         <img width="20" height="20" src="http://127.0.0.1:3000/img/index/mine.png">
-                        <p class="login">{{msg}}</p>
+                        <p class="login">
+                            <a>{{msg}} </a>
+                        </p>
                       </a>
                     </li>
                 </ul>
@@ -656,7 +658,7 @@
                     <a href="javascript:;">网站地图</a> &nbsp;|&nbsp;
                     <a href="javascript:;">回到旧版</a>
                 </div>
-                <p>版权所有 2012-2018 武昌工学院图书馆</p>
+                <p>版权所有 2012-2018 武昌工学院图书馆   <router-link to="/Managerlogin"> -  后台管理 </router-link>  </p>
             </div>
         </div>
     </div>
@@ -734,7 +736,7 @@ export default {
   created() {
     this.newbooks();
     if(sessionStorage.getItem('uid')){
-        this.msg = sessionStorage.getItem('uid')+"，欢迎你！"
+        this.msg = sessionStorage.getItem('uid')+ "，欢迎你！";
     }else{
         this.msg = "请登录"
     }
@@ -1071,26 +1073,29 @@ div.imgbox img:hover {
 }
 
 .gcbox>img {
-    opacity: 0.5;
+    transition: opacity 3s;
+    opacity: 1;
 }
 
 .gcbox>img:hover {
-    opacity: 1;
-
+    opacity: 0.2;
+    transition-duration: 0s;
 }
 
 .gccont a {
     position: absolute;
     width: 100%;
-    /* vertical-align: center; */
     text-align: center;
     color: #A0431B;
     font-weight: bold;
-    bottom: 40%;
+    bottom: 42%;
+    left: 5%;
+    opacity: 0;
 }
 
 .gccont a:hover {
     text-decoration: underline !important;
+    opacity: 1;
 }
 
 /* 第四个版块 */

@@ -44,9 +44,10 @@ export default {
         pswd:this.renew
       })
       var url = "http://127.0.0.1:3000/password";
-      this.axios.get(url,postDate).then(result=>{
+      this.axios.post(url,postDate).then(result=>{
         if(result.data.code==1){
             alert("修改成功！")
+            console.log(this.renew)
           }else{
             alert("修改失败！") 
           }

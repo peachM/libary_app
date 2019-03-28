@@ -169,7 +169,7 @@ export default {
   },
   created() {
     this.getMore();
-    this.bookSearch();
+    this.getHotbook();
   },
   methods: {
     jumpdetail(e) {
@@ -223,9 +223,10 @@ export default {
         this.list = result.data.data;
       });
     },
-/*     getHotbook(){
-      var url = "http://127.0.0.1:3000/Hotbook";
+ /*    getHotbook(){
+      var url = "http://127.0.0.1:3000/getHotbook";
       this.axios.get(url).then(result=>{
+        console.log(result.data.data);
         this.list = result.data.data;
       })
     }, */
@@ -236,6 +237,7 @@ export default {
       url += "&pageSize=" + this.pageSize;
       this.axios.get(url).then(result => {
         var rows = this.list.concat(result.data.data);
+        
         this.list = rows;
         console.log(this.list)
       });
